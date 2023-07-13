@@ -39,20 +39,23 @@ public class Main {
             elevatorTreadMap.put(number, elevatorThread);
         }
 
+        //초기 12명의 탑승인원 추가
         int passengers = elevatorNumber*3;
-        //12명의 탑승인원 추가
         for(int i=0; i< passengers; i++){
             Random random = new Random();
             int max = maxFloor+ minFloor-2;
             int boardingFloor = random.nextInt(max);
             int destinationFloor = random.nextInt(max);
+
             Passenger passenger = new Passenger(i%elevatorNumber, boardingFloor, destinationFloor, 90);
             ElevatorThread elevator = elevatorTreadMap.get(i%elevatorNumber);
+
             System.out.println("승객 :" +i+" : 를 "+elevator.getElevator().getNumber()+" 엘리베이터에 추가합니다.");
             elevator.transFormWaitPassengerFloor(boardingFloor);
             elevatorService.addWaitPassenger(elevator.getElevator(), passenger);
         }
 
+        //동작 유지
         while(true){
             int count =0;
             for(int i=0; i< elevatorTreadMap.size();i++){
@@ -68,13 +71,15 @@ public class Main {
             }
         }
 
+        //모든 스레드 종료
         if(!elevatorTreadMap.isEmpty()){
-            System.out.println("남은 스레드 종료 시작");
+            System.out.println("작동 중 엘리베이터 정지 시작");
             for (int key : elevatorTreadMap.keySet()) {
                 elevatorTreadMap.get(key).stop();
             }
-            System.out.println("스레드 전체 종료 완료");
+            System.out.println("작동 중 엘리베이터 전체 정지 완료");
         }
+        
         /*  ---------------------------종료-------------------------------- */
         /*  ---------------------------종료-------------------------------- */
         /*  ---------------------------종료-------------------------------- */
