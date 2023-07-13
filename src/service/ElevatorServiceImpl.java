@@ -37,16 +37,22 @@ public class ElevatorServiceImpl implements ElevatorService{
 
     @Override
     public void elevatorDoorStatus(Elevator elevator, ElevatorDoorStatus elevatorDoorStatus) {
+        /* 조건
+            1. close하고 1초 지나기 전에 같은 층에 Open의 입력이 들어올시 정지하고 Open하며
+                autoClose를 0으로 초기화 시키며 엘리베이터를 그층에 대기 시킵니다.
+         */
         elevator.transformDoorState(elevatorDoorStatus);
     }
 
     @Override
     public void addWaitPassenger(Elevator elevator, Passenger passenger) {
-
         elevator.addWaitPassenger(passenger);
     }
     @Override
     public void elevatorStatusTransForm(Elevator elevator,  boolean[] waitPassengerFloor) {
+        /*조건
+            1. 누른 시간과 현재 엘리베이터의 속도와 멈추는 시간을 정지가 가능하다면 바로 다음층에 멈추게 되고 아니라면 지나칩니다.
+        */
         int endPoint  = elevator.getMinFloor() +elevator.getMaxFloor();
         int currentFloor = elevator.getCurrentFloor();
         if(elevator.getElevatorStatus().equals(ElevatorStatus.UP)){
